@@ -1,0 +1,95 @@
+/* styles.css */
+
+/* Variables de color */
+:root {
+  --color-bg:       #f5f7fa;
+  --color-panel:    #ffffff;
+  --color-primary:  #4a90e2;
+  --color-accent:   #ff4136;
+  --color-text:     #333333;
+  --color-border:   #e0e6ed;
+  --color-log-bg:   #fafafa;
+}
+
+/* Reset y tipografía */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+h1 {
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+  font-size: 2rem;
+}
+
+/* Editor y log */
+#editor,
+#log {
+  width: 100%;
+  max-width: 800px;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-family: monospace;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+#editor {
+  height: 260px;
+}
+
+#log {
+  height: 120px;
+  overflow-y: auto;
+  background: var(--color-log-bg);
+}
+
+/* Botón */
+#run {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+}
+
+#run:hover {
+  background-color: #357ABD;
+}
+
+/* Canvas */
+canvas {
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-top: 1rem;
+}
+
+/* Layout responsivo */
+@media (max-width: 600px) {
+  #editor, #log, canvas {
+    width: 100%;
+  }
+}
