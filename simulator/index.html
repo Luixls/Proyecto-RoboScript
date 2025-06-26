@@ -4,35 +4,40 @@
   <meta charset="UTF-8" />
   <title>RoboScript — Editor y Simulador</title>
   <style>
-    body   { font-family: sans-serif; text-align: center; }
-    #editor { width: 80%; height: 150px; }
+    body    { font-family: sans-serif; text-align: center; }
+    #editor { width: 80%; height: 260px; }
     #run    { margin: 0.5rem; padding: 0.5rem 1rem; }
     canvas  { background: #f0f0f0; display: block; margin: 1rem auto; }
-    #log    { width: 80%; height: 100px; overflow-y: auto;
-              background:#fff; border:1px solid #ccc;
-              text-align:left; padding:0.5rem;}
+    #log    { width: 80%; height: 120px; overflow-y: auto;
+               background:#fff; border:1px solid #ccc;
+               text-align:left; padding:0.5rem; }
   </style>
 </head>
 <body>
   <h1>RoboScript — Editor y Simulador</h1>
 
   <textarea id="editor">
-# Escribe aquí tu script RoboScript
+# Reiniciar y mostrar estado inicial
 RESET
 ESTADO
 
-REPETIR 3 HACER
-  AVANZAR 2
-  ESPERAR 0.5
+# Recorrer un cuadrado de 4 aristas de 15 pasos
+REPETIR 4 HACER
+  # Cada paso comprueba obstáculo
+  REPETIR 15 HACER
+    SI OBSTACULO = 1 ENTONCES
+      ENCENDER LUZ
+      ESTADO
+    FIN
+    SI OBSTACULO != 1 ENTONCES
+      AVANZAR 1
+      ESPERAR 0.2
+    FIN
+  FIN
+  GIRAR DERECHA
 FIN
 
-GIRAR DERECHA
-ESTADO
-
-SI OBSTACULO = 1 ENTONCES
-  ENCENDER LUZ
-FIN
-
+# Estado final
 ESTADO
   </textarea>
   <br/>

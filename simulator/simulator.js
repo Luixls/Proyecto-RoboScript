@@ -9,11 +9,11 @@ const state = {
   dir: 0  // ángulo en grados: 0 mirando a la derecha
 };
 
-// Definir posición del obstáculo
+// Definir posición del obstáculo 
 const obstacle = {
-  x: canvas.width / 2 + 50,
-  y: canvas.height / 2,
-  r: 20
+  x: canvas.width / 2 + 200,  // ajustar aquí para desplazar obstáculo a la derecha o izquierda
+  y: canvas.height / 2 + 0,  // ajustar aquí para desplazar obstáculo hacia arriba o abajo
+  r: 20 // ajustar aquí para cambiar el tamaño del obstáculo
 };
 
 function drawRobot() {
@@ -61,8 +61,8 @@ const robot = {
   encender: t => console.log(`Encender: ${t}`),
   apagar: t => console.log(`Apagar: ${t}`),
   reset: () => {
-    state.x = canvas.width/2;
-    state.y = canvas.height/2;
+    state.x = canvas.width / 2;
+    state.y = canvas.height / 2;
     state.dir = 0;
     console.log("Reset de posición");
     render();
@@ -71,10 +71,9 @@ const robot = {
     console.log("Estado:", { x: state.x, y: state.y, dir: state.dir });
   },
   obstaculo: () => {
-    // calcula distancia al centro del obstáculo
     const dx = state.x - obstacle.x;
     const dy = state.y - obstacle.y;
-    const d = Math.sqrt(dx*dx + dy*dy);
+    const d = Math.sqrt(dx * dx + dy * dy);
     return d < obstacle.r + 5 ? 1 : 0;
   }
 };
@@ -82,9 +81,6 @@ const robot = {
 // Inicializar escena
 render();
 
-// Si el código generado tiene llamadas asíncronas a esperar,
-// debería envolverse en un async, por ejemplo:
-async function run() {
-  // aquí se inyectará el código generado
-}
+// Placeholder para run(); se sobrescribe al cargar el script generado
+async function run() {}
 window.run = run;
