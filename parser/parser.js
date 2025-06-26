@@ -2,8 +2,8 @@
 // http://github.com/Hardmath123/nearley
 (function () {
 function id(x) { return x[0]; }
- 
-const lexer = require("../lexer/lexer"); 
+
+const lexer = require("../lexer/lexer");
 var grammar = {
     Lexer: lexer,
     ParserRules: [
@@ -23,15 +23,20 @@ var grammar = {
     {"name": "esperarStmt", "symbols": [(lexer.has("ESPERAR") ? {type: "ESPERAR"} : ESPERAR), "_", (lexer.has("NUMERO") ? {type: "NUMERO"} : NUMERO)], "postprocess": d => ({ type: "Esperar",  value: Number(d[2].value) })},
     {"name": "encenderStmt", "symbols": [(lexer.has("ENCENDER") ? {type: "ENCENDER"} : ENCENDER), "_", (lexer.has("IDENTIFICADOR") ? {type: "IDENTIFICADOR"} : IDENTIFICADOR)], "postprocess": d => ({ type: "Encender", target: d[2].value })},
     {"name": "apagarStmt", "symbols": [(lexer.has("APAGAR") ? {type: "APAGAR"} : APAGAR), "_", (lexer.has("IDENTIFICADOR") ? {type: "IDENTIFICADOR"} : IDENTIFICADOR)], "postprocess": d => ({ type: "Apagar",   target: d[2].value })},
-    {"name": "siStmt", "symbols": [(lexer.has("SI") ? {type: "SI"} : SI), "_", "condicion", "_", (lexer.has("ENTONCES") ? {type: "ENTONCES"} : ENTONCES), "_", "bloque", "_", (lexer.has("FIN") ? {type: "FIN"} : FIN)], "postprocess": d => ({ type: "Si",       test: d[2],    consequent: d[6] })},
-    {"name": "mientrasStmt", "symbols": [(lexer.has("MIENTRAS") ? {type: "MIENTRAS"} : MIENTRAS), "_", "condicion", "_", (lexer.has("HACER") ? {type: "HACER"} : HACER), "_", "bloque", "_", (lexer.has("FIN") ? {type: "FIN"} : FIN)], "postprocess": d => ({ type: "Mientras", test: d[2], body:       d[6] })},
-    {"name": "condicion$subexpression$1", "symbols": [(lexer.has("NUMERO") ? {type: "NUMERO"} : NUMERO)]},
-    {"name": "condicion$subexpression$1", "symbols": [(lexer.has("IDENTIFICADOR") ? {type: "IDENTIFICADOR"} : IDENTIFICADOR)]},
-    {"name": "condicion", "symbols": [(lexer.has("IDENTIFICADOR") ? {type: "IDENTIFICADOR"} : IDENTIFICADOR), "_", "operador", "_", "condicion$subexpression$1"], "postprocess": d => ({ type:"Condicion", left:d[0].value, operator:d[2], right:d[4].value })},
+    {"name": "numeroOId", "symbols": [(lexer.has("NUMERO") ? {type: "NUMERO"} : NUMERO)], "postprocess": d => ({ kind: "Literal",    value: Number(d[0].value) })},
+    {"name": "numeroOId", "symbols": [(lexer.has("IDENTIFICADOR") ? {type: "IDENTIFICADOR"} : IDENTIFICADOR)], "postprocess": d => ({ kind: "Identifier", value: d[0].value })},
+    {"name": "condicion", "symbols": [(lexer.has("IDENTIFICADOR") ? {type: "IDENTIFICADOR"} : IDENTIFICADOR), "_", "operador", "_", "numeroOId"], "postprocess":  d => ({
+           type:    "Condicion",
+           left:    d[0].value,
+           operator:d[2],
+           right:   d[4]
+        }) },
     {"name": "operador", "symbols": [(lexer.has("IGUAL") ? {type: "IGUAL"} : IGUAL)], "postprocess": () => "="},
     {"name": "operador", "symbols": [(lexer.has("DIFERENTE") ? {type: "DIFERENTE"} : DIFERENTE)], "postprocess": () => "!="},
     {"name": "operador", "symbols": [(lexer.has("MAYOR") ? {type: "MAYOR"} : MAYOR)], "postprocess": () => ">"},
     {"name": "operador", "symbols": [(lexer.has("MENOR") ? {type: "MENOR"} : MENOR)], "postprocess": () => "<"},
+    {"name": "siStmt", "symbols": [(lexer.has("SI") ? {type: "SI"} : SI), "_", "condicion", "_", (lexer.has("ENTONCES") ? {type: "ENTONCES"} : ENTONCES), "_", "bloque", "_", (lexer.has("FIN") ? {type: "FIN"} : FIN)], "postprocess": d => ({ type: "Si",       test: d[2],    consequent: d[6] })},
+    {"name": "mientrasStmt", "symbols": [(lexer.has("MIENTRAS") ? {type: "MIENTRAS"} : MIENTRAS), "_", "condicion", "_", (lexer.has("HACER") ? {type: "HACER"} : HACER), "_", "bloque", "_", (lexer.has("FIN") ? {type: "FIN"} : FIN)], "postprocess": d => ({ type: "Mientras", test: d[2],    body:       d[6] })},
     {"name": "bloque", "symbols": ["instrucciones"], "postprocess": d => d[0]},
     {"name": "_$ebnf$1", "symbols": []},
     {"name": "_$ebnf$1$subexpression$1", "symbols": [(lexer.has("WS") ? {type: "WS"} : WS)]},
