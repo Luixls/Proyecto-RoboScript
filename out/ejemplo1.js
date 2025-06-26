@@ -1,14 +1,28 @@
 // Código generado por RoboScript
-const robot = {
-  avanzar: n => console.log("Avanzar " + n),
-  girar: dir => console.log("Girar " + dir),
-  esperar: s => console.log("Esperar " + s + "s"),
-  encender: t => console.log("Encender " + t),
-  apagar: t => console.log("Apagar " + t)
-};
-
-robot.avanzar(5);
-robot.girar("IZQUIERDA");
-if (OBSTACULO == 1) {
-  robot.apagar("MOTOR");
+async function run() {
+  robot.reset();
+  robot.estado();
+  for (let i = 0; i < 5; i++) {
+  robot.avanzar(1);
+  await robot.esperar(0.5);
 }
+  robot.girar("DERECHA");
+  robot.estado();
+  for (let i = 0; i < 5; i++) {
+  robot.avanzar(1);
+  await robot.esperar(0.5);
+}
+  robot.reset();
+  robot.girar("DERECHA");
+  robot.avanzar(4);
+  robot.estado();
+  if (robot.obstaculo() == 1) {
+  robot.encender("LUZ");
+  await robot.esperar(1);
+  robot.apagar("LUZ");
+}
+  robot.estado();
+}
+
+// Ejecutar automáticamente
+run();

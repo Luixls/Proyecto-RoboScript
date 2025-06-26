@@ -2,36 +2,39 @@
 const moo = require("moo");
 
 const lexer = moo.compile({
-  WS: /[ \t]+/,
-  COMENTARIO: { match: /#[^\n]*/, lineBreaks: false },
-  NUEVA_LINEA: { match: /\r\n|\r|\n/, lineBreaks: true },
+  WS:           /[ \t]+/,
+  COMENTARIO:   { match: /#[^\n]*/, lineBreaks: false },
+  NUEVA_LINEA:  { match: /\r\n|\r|\n/, lineBreaks: true },
 
   // Palabras clave
-  AVANZAR: "AVANZAR",
-  GIRAR: "GIRAR",
+  AVANZAR:   "AVANZAR",
+  GIRAR:     "GIRAR",
   IZQUIERDA: "IZQUIERDA",
-  DERECHA: "DERECHA",
-  ESPERAR: "ESPERAR",
-  ENCENDER: "ENCENDER",
-  APAGAR: "APAGAR",
-  SI: "SI",
-  ENTONCES: "ENTONCES",
-  MIENTRAS: "MIENTRAS",
-  HACER: "HACER",
-  FIN: "FIN",
+  DERECHA:   "DERECHA",
+  ESPERAR:   "ESPERAR",
+  ENCENDER:  "ENCENDER",
+  APAGAR:    "APAGAR",
+  SI:        "SI",
+  ENTONCES:  "ENTONCES",
+  MIENTRAS:  "MIENTRAS",
+  HACER:     "HACER",
+  FIN:       "FIN",
+  REPETIR:   "REPETIR",
+  RESET:     "RESET",
+  ESTADO:    "ESTADO",
 
-  // Operadores lógicos
-  IGUAL: "=",
-  DIFERENTE: "!=",
-  MAYOR: ">",
-  MENOR: "<",
+  // Operadores
+  IGUAL:      "=",
+  DIFERENTE:  "!=",
+  MAYOR:      ">",
+  MENOR:      "<",
 
-  // Valores
-  NUMERO: /[0-9]+/,
+  // Literales (enteros o decimales) y identificadores
+  NUMERO:        /[0-9]+(?:\.[0-9]+)?/,
   IDENTIFICADOR: /[A-Z_]+/,
 
-  // Captador de Error
-  ERROR: moo.error,
+  // Captura cualquier otro carácter no reconocido
+  ERROR: moo.error
 });
 
 module.exports = lexer;

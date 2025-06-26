@@ -4,7 +4,7 @@ const nearley  = require("nearley");
 const grammar  = require("./parser/parser.js");
 const { compileProgram } = require("./compiler/compiler");
 
-// 1. Generar el AST (igual que antes)
+// 1. Generar el AST 
 const source = fs.readFileSync("./tests/ejemplo1.rbs", "utf8");
 const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 parser.feed(source);
@@ -22,5 +22,3 @@ fs.writeFileSync("./out/ejemplo1.js", jsCode);
 console.log("Código JavaScript generado en out/ejemplo1.js:"); 
 console.log(jsCode);
 
-// 4. (Opcional) Ejecutarlo dinámicamente
-// eval(jsCode);

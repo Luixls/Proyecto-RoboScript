@@ -1,22 +1,20 @@
 // compiler/compiler.js
 
 function compileProgram(program) {
-  const header = [
-    `// Código generado por RoboScript`,
-    `const robot = {`,
-    `  avanzar: n => console.log("Avanzar " + n),`,
-    `  girar: dir => console.log("Girar " + dir),`,
-    `  esperar: s => console.log("Esperar " + s + "s"),`,
-    `  encender: t => console.log("Encender " + t),`,
-    `  apagar: t => console.log("Apagar " + t)`,
-    `};`,
-    ``
-  ];
-  // program.body es [ [stmt], [stmt], ... ]
-  const body = program.body.flatMap(stmtArr =>
+  // Generamos únicamente el wrapper async run() con los nodos traducidos
+  const bodyLines = program.body.flatMap(stmtArr =>
     stmtArr.map(compileNode)
   );
-  return [...header, ...body].join("\n");
+
+  return [
+    `// Código generado por RoboScript`,
+    `async function run() {`,
+    ...bodyLines.map(line => `  ${line}`),
+    `}`,
+    ``,
+    `// Ejecutar automáticamente`,
+    `run();`
+  ].join("\n");
 }
 
 function compileNode(node) {
@@ -26,21 +24,31 @@ function compileNode(node) {
     case "Girar":
       return `robot.girar("${node.direction}");`;
     case "Esperar":
-      return `robot.esperar(${node.value});`;
+      return `await robot.esperar(${node.value});`;
     case "Encender":
       return `robot.encender("${node.target}");`;
     case "Apagar":
       return `robot.apagar("${node.target}");`;
+    case "Reset":
+      return `robot.reset();`;
+    case "Estado":
+      return `robot.estado();`;
     case "Si":
       return [
         `if (${compileCondition(node.test)}) {`,
-        ...node.consequent.flatMap(stmtArr => stmtArr.map(n => "  " + compileNode(n))),
+        ...node.consequent.flatMap(stmtArr => stmtArr.map(n => `  ${compileNode(n)}`)),
         `}`
       ].join("\n");
     case "Mientras":
       return [
         `while (${compileCondition(node.test)}) {`,
-        ...node.body.flatMap(stmtArr => stmtArr.map(n => "  " + compileNode(n))),
+        ...node.body.flatMap(stmtArr => stmtArr.map(n => `  ${compileNode(n)}`)),
+        `}`
+      ].join("\n");
+    case "Repetir":
+      return [
+        `for (let i = 0; i < ${node.count}; i++) {`,
+        ...node.body.flatMap(stmtArr => stmtArr.map(n => `  ${compileNode(n)}`)),
         `}`
       ].join("\n");
     default:
@@ -49,16 +57,14 @@ function compileNode(node) {
 }
 
 function compileCondition(test) {
-  // test.right es { kind, value }
-  let rightCode;
-  if (test.right.kind === "Literal") {
-    rightCode = test.right.value;
-  } else {
-    rightCode = test.right.value;
-  }
-  // mapear "=" a "=="
+  const leftExpr = test.left === "OBSTACULO"
+    ? "robot.obstaculo()"
+    : test.left;
+  const rightExpr = test.right.kind === "Literal"
+    ? test.right.value
+    : `"${test.right.value}"`;
   const op = test.operator === "=" ? "==" : test.operator;
-  return `${test.left} ${op} ${rightCode}`;
+  return `${leftExpr} ${op} ${rightExpr}`;
 }
 
 module.exports = { compileProgram };

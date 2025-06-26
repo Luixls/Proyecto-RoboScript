@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>RoboScript — Editor y Simulador</title>
+  <style>
+    body   { font-family: sans-serif; text-align: center; }
+    #editor { width: 80%; height: 150px; }
+    #run    { margin: 0.5rem; padding: 0.5rem 1rem; }
+    canvas  { background: #f0f0f0; display: block; margin: 1rem auto; }
+    #log    { width: 80%; height: 100px; overflow-y: auto;
+              background:#fff; border:1px solid #ccc;
+              text-align:left; padding:0.5rem;}
+  </style>
+</head>
+<body>
+  <h1>RoboScript — Editor y Simulador</h1>
+
+  <textarea id="editor">
+# Escribe aquí tu script RoboScript
+RESET
+ESTADO
+
+REPETIR 3 HACER
+  AVANZAR 2
+  ESPERAR 0.5
+FIN
+
+GIRAR DERECHA
+ESTADO
+
+SI OBSTACULO = 1 ENTONCES
+  ENCENDER LUZ
+FIN
+
+ESTADO
+  </textarea>
+  <br/>
+  <button id="run">Compilar y Ejecutar</button>
+
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <div id="log"></div>
+
+  <!-- 1) Nearley runtime -->
+  <script src="https://unpkg.com/nearley@2.20.1/lib/nearley.js"></script>
+  <!-- 2) Bundle ensamblado con Browserify (tu gramática + Moo) -->
+  <script src="grammar.bundle.js"></script>
+  <!-- 3) Motor gráfico y definición de `robot` y `run()` vacía -->
+  <script src="simulator.js"></script>
+  <!-- 4) Lógica de UI: parse, compile y ejecutar -->
+  <script src="main.js"></script>
+</body>
+</html>
