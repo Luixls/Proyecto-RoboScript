@@ -11,8 +11,8 @@ const state = {
 
 // Definir posición del obstáculo 
 const obstacle = {
-  x: canvas.width / 2 + 200,  // ajustar aquí para desplazar obstáculo a la derecha o izquierda
-  y: canvas.height / 2 + 0,  // ajustar aquí para desplazar obstáculo hacia arriba o abajo
+  x: canvas.width / 2 + 0,  // ajustar aquí para desplazar obstáculo a la derecha o izquierda
+  y: canvas.height / 2 + 50,  // ajustar aquí para desplazar obstáculo hacia arriba o abajo
   r: 20 // ajustar aquí para cambiar el tamaño del obstáculo
 };
 
