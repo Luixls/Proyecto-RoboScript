@@ -1,7 +1,13 @@
 // pruebaParser.js
 const fs      = require("fs");
 const nearley = require("nearley");
-const grammar = require("./parser/parser.js");
+const grammarModule = require("./parser/parser.js");
+
+const grammar = {
+  ParserRules:   grammarModule.ParserRules,
+  ParserStart:   grammarModule.ParserStart,
+  Lexer:         grammarModule.Lexer
+};
 
 const source = fs.readFileSync("./tests/ejemplo1.rbs", "utf8");
 const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
